@@ -14,7 +14,8 @@
     }
   },
   "ignorePatterns": [
-    "gatsby-config.js"
+    "gatsby-config.js",
+    "gatsby-node.js"
   ],
   "rules": {
     "react/no-unescaped-entities": 0,

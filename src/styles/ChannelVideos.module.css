@@ -1,0 +1,11 @@
+.channelVideos {
+  display: table-row;
+}
+
+.channelVideos > * {
+  display: table-cell;
+}
+
+.channelVideosVideos {
+
+}

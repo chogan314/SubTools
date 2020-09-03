@@ -1,12 +1,14 @@
 import React from 'react';
-import {getChannels} from '../apis/youtube';
-import Channel from '../components/ChannelBadge';
+import {getChannels, getUploadPlaylistItems, getVideos} from '../apis/youtube';
+import ArchiveSection from '../components/ArchiveSection';
 
 type IndexProps = {
 }
 
 type IndexState = {
-  channelData: Channel[]
+  channels: Channel[],
+  playlistItems: PlaylistItem[],
+  videos: Video[]
 }
 
 class Index extends React.Component<IndexProps, IndexState> {
@@ -14,7 +16,9 @@ class Index extends React.Component<IndexProps, IndexState> {
     super(props);
 
     this.state = {
-      channelData: []
+      channels: [],
+      playlistItems: [],
+      videos: []
     };
   }
 
@@ -23,16 +27,30 @@ class Index extends React.Component<IndexProps, IndexState> {
     '***REMOVED***'
   ];
 
-  componentDidMount(): void {
-    getChannels(this.channelIDs).then(x => this.setState({channelData: x}));
+  async componentDidMount(): Promise<void> {
+    const channels = await getChannels(this.channelIDs);
+    this.setState({channels: channels});
+
+    const playlistItems = (await Promise.all(
+      channels.map(channel => getUploadPlaylistItems(channel))
+    )).reduce((flat, next) => flat.concat(next), []);
+    this.setState({playlistItems: playlistItems});
+
+    const videos = await getVideos(playlistItems);
+    this.setState({videos: videos});
+  }
+
+  getChannelVideos(channel: Channel): Video[] {
+    return this.state.videos
+      .filter(video => video.channelID === channel.id)
+      .filter(video => video.broadcastType === "none")
+      .sort((videoA, videoB) => videoA.publishDate > videoB.publishDate ? 1 : 0);
   }
 
   render(): React.ReactElement {
     return (
       <div>
-        {this.state.channelData.map(c => {
-          return <Channel key={c.id} channel={c} />;
-        })}
+        <ArchiveSection channels={this.state.channels} videos={this.state.videos} />
       </div>
     );
   }

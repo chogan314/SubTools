@@ -1,0 +1,39 @@
+.channelBadge {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  max-width: 200px;
+}
+
+.channelBadgeInner {
+  background-color: rgb(238, 238, 241);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
+}
+
+.channelBadgeInner:hover {
+  background-color: rgb(216, 216, 216);
+}
+
+.channelBadgeInner > div {
+  text-align: center;
+}
+
+.channelBadgeInner > img {
+  border-radius: 50%;
+  margin-bottom: 10px;
+  max-width: 90%;
+  height: auto;
+  width: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

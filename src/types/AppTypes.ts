@@ -44,11 +44,11 @@ type VideoThumbnails = {
   maxres: Thumbnail
 }
 
-enum BroadcastType {
-  Archive,
-  Live,
-  Upcoming
-}
+// const enum BroadcastType {
+//   Archive,
+//   Live,
+//   Upcoming
+// }
 
 type Video = {
   id: string,
@@ -66,6 +66,7 @@ type Video = {
   title: string,
   description: string,
   thumbnails: VideoThumbnails,
-  broadcastType: BroadcastType,
-  publishDate: string
+  broadcastType: string,
+  publishDate: string,
+  url: string
 }

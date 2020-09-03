@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const VideoGetQuantity = 20;
+
 function youtube(part: string, maxResults: number) {
   return axios.create({
     baseURL: 'https://www.googleapis.com/youtube/v3/',
@@ -43,7 +45,7 @@ export async function getChannels(channelIDs: string[]): Promise<Channel[]> {
     }]
   }
 
-  const parts = 'snippet,contentDetails';
+  const parts = 'snippet,contentDetails,statistics';
   const response = await youtube(parts, channelIDs.length).get<ChannelResponse>('/channels', {
     params: {
       id: channelIDs.join(',')
@@ -63,7 +65,7 @@ export async function getChannels(channelIDs: string[]): Promise<Channel[]> {
   }));
 }
 
-export async function getUploadPlaylist(channel: Channel): Promise<PlaylistItem[]> {
+export async function getUploadPlaylistItems(channel: Channel): Promise<PlaylistItem[]> {
   type PlaylistResponse = {
     items: [{
       snippet: {
@@ -79,7 +81,7 @@ export async function getUploadPlaylist(channel: Channel): Promise<PlaylistItem[
   }
 
   const parts = 'contentDetails,snippet';
-  const response = await youtube(parts, 20).get<PlaylistResponse>('/playlistItems', {
+  const response = await youtube(parts, VideoGetQuantity).get<PlaylistResponse>('/playlistItems', {
     params: {
       playlistId: channel.uploadsPlaylistID
     }
@@ -90,11 +92,29 @@ export async function getUploadPlaylist(channel: Channel): Promise<PlaylistItem[
     playlistID: item.snippet.playlistId,
     position: parseInt(item.snippet.position),
     publishDate: item.contentDetails.videoPublishedAt,
-    videoID: item.contentDetails.videoPublishedAt
+    videoID: item.contentDetails.videoId
   }));
 }
 
 export async function getVideos(playlistItems: PlaylistItem[]): Promise<Video[]> {
+  if (playlistItems.length === 0)
+  {
+    return [];
+  }
+
+  const chunk = 50;
+  const splitArray: PlaylistItem[][] = [];
+
+  for (let i = 0, j = playlistItems.length; i < j; i += chunk) {
+      splitArray.push(playlistItems.slice(i , i+chunk));
+  }
+  
+  return (await Promise.all(
+    splitArray.map(pItems => getVideosInternal(pItems))
+  )).reduce((flat, next) => flat.concat(next), []);
+}
+
+async function getVideosInternal(playlistItems: PlaylistItem[]): Promise<Video[]> {
   type VideoResponse = {
     items: [{
       id: string,
@@ -139,20 +159,20 @@ export async function getVideos(playlistItems: PlaylistItem[]): Promise<Video[]>
     }
   });
 
-  const getBroadcastType = (liveBroadcastContent: string): BroadcastType => {
-    let broadcastType: BroadcastType = BroadcastType.Archive;
+  // const getBroadcastType = (liveBroadcastContent: string): BroadcastType => {
+  //   let broadcastType: BroadcastType = BroadcastType.Archive;
 
-    if (liveBroadcastContent === 'live') {
-      broadcastType = BroadcastType.Live;
-    } else if (liveBroadcastContent === 'upcoming') {
-      broadcastType = BroadcastType.Upcoming;
-    }
+  //   if (liveBroadcastContent === 'live') {
+  //     broadcastType = BroadcastType.Live;
+  //   } else if (liveBroadcastContent === 'upcoming') {
+  //     broadcastType = BroadcastType.Upcoming;
+  //   }
 
-    return broadcastType;
-  };
+  //   return broadcastType;
+  // };
 
   return response.data.items.map((item): Video => ({
-    broadcastType: getBroadcastType(item.snippet.liveBroadcastContent),
+    broadcastType: item.snippet.liveBroadcastContent,
     channelID: item.snippet.channelId,
     commentCount: parseInt(item.statistics.commentCount),
     description: item.snippet.description,
@@ -163,15 +183,21 @@ export async function getVideos(playlistItems: PlaylistItem[]): Promise<Video[]>
     id: item.id,
     isPublic: item.status.privacyStatus === 'public',
     likeCount: parseInt(item.statistics.likeCount),
+    // liveStreamingDetails: {
+    //   actualStartTime: item.liveStreamingDetails.actualStartTime,
+    //   actualEndTime: item.liveStreamingDetails.actualEndTime,
+    //   scheduledStartTime: item.liveStreamingDetails.scheduledStartTime
+    // },
     liveStreamingDetails: {
-      actualStartTime: item.liveStreamingDetails.actualStartTime,
-      actualEndTime: item.liveStreamingDetails.actualEndTime,
-      scheduledStartTime: item.liveStreamingDetails.scheduledStartTime
+      actualStartTime: "",
+      actualEndTime: "",
+      scheduledStartTime: ""
     },
     playerEmbedHtml: item.player.embedHtml,
     publishDate: item.snippet.publishedAt,
     thumbnails: item.snippet.thumbnails,
     title: item.snippet.title,
-    viewCount: parseInt(item.statistics.viewCount)
+    viewCount: parseInt(item.statistics.viewCount),
+    url: `https://www.youtube.com/watch?v=${item.id}`
   }));
 }
