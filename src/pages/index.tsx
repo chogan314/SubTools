@@ -27,6 +27,9 @@ class Index extends React.Component<IndexProps, IndexState> {
   channelIDs: string[] = [
     '***REMOVED***',
     '***REMOVED***',
+    '***REMOVED***',
+    '***REMOVED***',
+    '***REMOVED***',
     '***REMOVED***'
   ];
 
