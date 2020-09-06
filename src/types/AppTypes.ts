@@ -67,6 +67,6 @@ type Video = {
   description: string,
   thumbnails: VideoThumbnails,
   broadcastType: string,
-  publishDate: string,
+  publishDate: Date,
   url: string
 }

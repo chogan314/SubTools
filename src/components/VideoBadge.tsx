@@ -11,7 +11,7 @@ function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
   return (
     <div className={videoBadgeStyles.videoBadge}>
       <a target="_blank" rel="noopener noreferrer"  href={video.url}>
-        <img src={video.thumbnails.default.url} alt={video.title} />
+        <img src={video.thumbnails.medium.url} alt={video.title} />
       </a>
     </div>
   );

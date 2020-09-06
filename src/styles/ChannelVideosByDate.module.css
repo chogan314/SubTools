@@ -1,0 +1,26 @@
+.channelVideos {
+  display: table-row;
+}
+
+.channelVideos > * {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.channelCell {
+  display: table-cell;
+}
+
+.dateCell {
+  display: table-cell;
+}
+
+.dateCell > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.channelVideosVideos {
+  
+}

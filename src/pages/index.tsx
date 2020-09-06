@@ -1,6 +1,8 @@
 import React from 'react';
 import {getChannels, getUploadPlaylistItems, getVideos} from '../apis/youtube';
 import ArchiveSection from '../components/ArchiveSection';
+import Container from '../components/Container';
+import '../styles/style.css';
 
 type IndexProps = {
 }
@@ -23,6 +25,7 @@ class Index extends React.Component<IndexProps, IndexState> {
   }
 
   channelIDs: string[] = [
+    '***REMOVED***',
     '***REMOVED***',
     '***REMOVED***'
   ];
@@ -49,9 +52,9 @@ class Index extends React.Component<IndexProps, IndexState> {
 
   render(): React.ReactElement {
     return (
-      <div>
+      <Container>
         <ArchiveSection channels={this.state.channels} videos={this.state.videos} />
-      </div>
+      </Container>
     );
   }
 }

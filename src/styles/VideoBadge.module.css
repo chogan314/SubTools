@@ -1,3 +1,13 @@
 .videoBadge {
-  
+  padding: 5px;
+}
+
+.videoBadge img {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+.videoBadge a {
+  display: flex;
 }

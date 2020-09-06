@@ -194,7 +194,7 @@ async function getVideosInternal(playlistItems: PlaylistItem[]): Promise<Video[]
       scheduledStartTime: ""
     },
     playerEmbedHtml: item.player.embedHtml,
-    publishDate: item.snippet.publishedAt,
+    publishDate: new Date(item.snippet.publishedAt),
     thumbnails: item.snippet.thumbnails,
     title: item.snippet.title,
     viewCount: parseInt(item.statistics.viewCount),

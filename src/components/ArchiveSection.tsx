@@ -1,5 +1,6 @@
 import React from 'react';
-import ChannelVideos from './ChannelVideos';
+import ChannelVideosByDate from './ChannelVideosByDate';
+import date from 'date-and-time';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const archiveSectionStyles = require('../styles/ArchiveSection.module.css');
@@ -9,17 +10,39 @@ type ArchiveSectionProps = {
   videos: Video[]
 }
 
-function getChannelVideos(channel: Channel, vidoes: Video[]): Video[] {
-  return vidoes
-    .filter(video => video.channelID === channel.id)
-    .filter(video => video.broadcastType === "none")
-    .sort((videoA, videoB) => videoA.publishDate > videoB.publishDate ? 1 : 0);
-}
-
 function ArchiveSection({channels, videos}: ArchiveSectionProps): React.ReactElement {
+  const dates = [
+    new Date(),
+    date.addDays(new Date(), -1),
+    date.addDays(new Date(), -2),
+    date.addDays(new Date(), -3),
+    date.addDays(new Date(), -4),
+    date.addDays(new Date(), -5),
+    date.addDays(new Date(), -6)
+  ];
+
+  function getChannelVideos(channel: Channel, videos: Video[]): Video[] {
+    return videos
+      .filter(video => video.channelID === channel.id)
+      .filter(video => video.broadcastType === "none")
+      .sort((videoA, videoB) => videoA.publishDate > videoB.publishDate ? 1 : 0);
+  }
+
   return (
     <div className={archiveSectionStyles.archiveSection}>
-      {channels.map(channel => <ChannelVideos key={channel.id} channel={channel} videos={getChannelVideos(channel, videos)} />)}
+      <div className={archiveSectionStyles.tableHeader}>
+        <div>Channel</div>
+        {
+          dates.map(d => {
+            return (
+              <div key={`dateHeader_${date.format(d, 'YYYY-MM-DD')}`}>
+                {date.format(d, 'dddd MMM DD')}
+              </div>
+            );
+          })
+        }
+      </div>
+      {channels.map(channel => <ChannelVideosByDate key={channel.id} channel={channel} videos={getChannelVideos(channel, videos)} dates={dates} />)}
     </div>
   );
 }
