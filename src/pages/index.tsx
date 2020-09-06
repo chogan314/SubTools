@@ -3,6 +3,7 @@ import {getChannels, getUploadPlaylistItems, getVideos} from '../apis/youtube';
 import ArchiveSection from '../components/ArchiveSection';
 import Container from '../components/Container';
 import '../styles/style.css';
+import channelIDsTestData from '../../test-data/ChannelIDs.json';
 
 type IndexProps = {
 }
@@ -24,17 +25,8 @@ class Index extends React.Component<IndexProps, IndexState> {
     };
   }
 
-  channelIDs: string[] = [
-    '***REMOVED***',
-    '***REMOVED***',
-    '***REMOVED***',
-    '***REMOVED***',
-    '***REMOVED***',
-    '***REMOVED***'
-  ];
-
   async componentDidMount(): Promise<void> {
-    const channels = await getChannels(this.channelIDs);
+    const channels = await getChannels(channelIDsTestData.channelIDs);
     this.setState({channels: channels});
 
     const playlistItems = (await Promise.all(
