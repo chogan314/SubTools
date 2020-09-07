@@ -148,7 +148,7 @@ async function getVideosInternal(playlistItems: PlaylistItem[]): Promise<Video[]
         actualStartTime: string,
         actualEndTime: string,
         scheduledStartTime: string
-      }
+      } | string
     }]
   }
 
@@ -171,33 +171,42 @@ async function getVideosInternal(playlistItems: PlaylistItem[]): Promise<Video[]
   //   return broadcastType;
   // };
 
-  return response.data.items.map((item): Video => ({
-    broadcastType: item.snippet.liveBroadcastContent,
-    channelID: item.snippet.channelId,
-    commentCount: parseInt(item.statistics.commentCount),
-    description: item.snippet.description,
-    dislikeCount: parseInt(item.statistics.dislikeCount),
-    duration: item.contentDetails.duration,
-    embeddable: item.status.embeddable === 'true',
-    favoriteCount: parseInt(item.statistics.favoriteCount),
-    id: item.id,
-    isPublic: item.status.privacyStatus === 'public',
-    likeCount: parseInt(item.statistics.likeCount),
-    // liveStreamingDetails: {
-    //   actualStartTime: item.liveStreamingDetails.actualStartTime,
-    //   actualEndTime: item.liveStreamingDetails.actualEndTime,
-    //   scheduledStartTime: item.liveStreamingDetails.scheduledStartTime
-    // },
-    liveStreamingDetails: {
-      actualStartTime: "",
-      actualEndTime: "",
-      scheduledStartTime: ""
-    },
-    playerEmbedHtml: item.player.embedHtml,
-    publishDate: new Date(item.snippet.publishedAt),
-    thumbnails: item.snippet.thumbnails,
-    title: item.snippet.title,
-    viewCount: parseInt(item.statistics.viewCount),
-    url: `https://www.youtube.com/watch?v=${item.id}`
-  }));
+  return response.data.items.map((item): Video => {
+    const video: Video = {
+      broadcastType: item.snippet.liveBroadcastContent,
+      channelID: item.snippet.channelId,
+      commentCount: parseInt(item.statistics.commentCount),
+      description: item.snippet.description,
+      dislikeCount: parseInt(item.statistics.dislikeCount),
+      duration: item.contentDetails.duration,
+      embeddable: item.status.embeddable === 'true',
+      favoriteCount: parseInt(item.statistics.favoriteCount),
+      id: item.id,
+      isPublic: item.status.privacyStatus === 'public',
+      likeCount: parseInt(item.statistics.likeCount),
+      liveStreamingDetails: undefined,
+      playerEmbedHtml: item.player.embedHtml,
+      publishDate: new Date(item.snippet.publishedAt),
+      thumbnails: item.snippet.thumbnails,
+      title: item.snippet.title,
+      viewCount: parseInt(item.statistics.viewCount),
+      url: `https://www.youtube.com/watch?v=${item.id}`
+    };
+
+    if (item.liveStreamingDetails !== "none" && item.liveStreamingDetails !== undefined) {
+      const liveStreamingDetals = item.liveStreamingDetails as {
+        actualStartTime: string,
+        actualEndTime: string,
+        scheduledStartTime: string
+      };
+
+      video.liveStreamingDetails = {
+        actualStartTime: new Date(liveStreamingDetals.actualStartTime),
+        actualEndTime: new Date(liveStreamingDetals.actualEndTime),
+        scheduledStartTime: new Date(liveStreamingDetals.scheduledStartTime),
+      };
+    }
+
+    return video;
+  });
 }

@@ -9,7 +9,7 @@
 }
 
 .videoBadge a {
-  display: flex;
+  display: inline-block;
 }
 
 .durationOverlay {
@@ -25,6 +25,7 @@
 .thumbnailContainer {
   position: relative;
   text-align: center;
+  height: auto;
 }
 
 .publishTimeOverlay {

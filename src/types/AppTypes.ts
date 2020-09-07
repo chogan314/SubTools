@@ -31,9 +31,9 @@ type PlaylistItem = {
 }
 
 type LiveStreamingDetails = {
-  actualStartTime: string,
-  actualEndTime: string,
-  scheduledStartTime: string
+  actualStartTime: Date,
+  actualEndTime: Date,
+  scheduledStartTime: Date
 }
 
 type VideoThumbnails = {
@@ -61,7 +61,7 @@ type Video = {
   favoriteCount: number,
   commentCount: number,
   playerEmbedHtml: string,
-  liveStreamingDetails: LiveStreamingDetails,
+  liveStreamingDetails: LiveStreamingDetails | undefined,
   channelID: string,
   title: string,
   description: string,

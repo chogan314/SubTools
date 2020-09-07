@@ -2,6 +2,7 @@ import React from 'react';
 import ChannelBadge from './ChannelBadge';
 import VideoBadge from './VideoBadge';
 import date from 'date-and-time';
+import {getPremierDate} from '../util/VideoUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const channelVideosByDateStyles = require('../styles/ChannelVideosByDate.module.css');
@@ -30,7 +31,7 @@ function ChannelVideosByDate({channel, videos, dates}: ChannelVideosRowProps): R
             <div key={`dateCell_${date.format(d, 'YYYY-MM-DD')}`} className={channelVideosByDateStyles.dateCell}>
               <div>
                 {
-                  videos.filter(video => areSameDate(video.publishDate, d))
+                  videos.filter(video => areSameDate(getPremierDate(video), d))
                   .sort((a, b) => a > b ? 1 : -1)
                   .map(video => <VideoBadge key={video.id} video={video} />)
                 }
