@@ -6,15 +6,16 @@
   max-width: 100%;
   height: auto;
   width: auto;
+  display: block;
 }
 
 .videoBadge a {
-  display: inline-block;
+  display: block;
 }
 
 .durationOverlay {
   position: absolute;
-  bottom: 8px;
+  bottom: 3px;
   right: 6px;
   background-color: black;
   color: white;
@@ -30,7 +31,7 @@
 
 .publishTimeOverlay {
   position: absolute;
-  bottom: 8px;
+  bottom: 3px;
   left: 6px;
   background-color: black;
   color: white;
