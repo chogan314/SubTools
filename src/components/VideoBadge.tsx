@@ -24,7 +24,10 @@ function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
       hours += (duration.hours ?? 0);
     }
 
-    timeValues.push(hours.toString());
+    if (hours > 0) {
+      timeValues.push(hours.toString());
+    }
+    
     timeValues.push(duration.minutes?.toLocaleString(undefined, {minimumIntegerDigits: 2}) ?? '00');
     timeValues.push(duration.seconds?.toLocaleString(undefined, {minimumIntegerDigits: 2}) ?? '00');
 
