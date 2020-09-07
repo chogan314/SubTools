@@ -10,8 +10,6 @@ type VideoBadgeProps = {
   video: Video
 }
 
-// <a target="_blank" rel="noopener noreferrer"  href={video.url}></a>
-
 function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
   function durationToString(duration: Duration): string {
     const timeValues: string[] = [];
@@ -34,13 +32,36 @@ function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
     return timeValues.join(':');
   }
 
+  function handleMouseEnter(): void {
+    (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.publishTimeOverlay}`) as HTMLDivElement).style.display = 'none';
+    (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.durationOverlay}`) as HTMLDivElement).style.display = 'none';
+    (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.titleOverlay}`) as HTMLDivElement).style.display = 'block';
+  }
+
+  function handleMouseLeave(): void {
+    (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.publishTimeOverlay}`) as HTMLDivElement).style.display = 'block';
+    (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.durationOverlay}`) as HTMLDivElement).style.display = 'block';
+    (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.titleOverlay}`) as HTMLDivElement).style.display = 'none';
+  }
+
+  function getID(): string {
+    return `videoBadge_${video.channelID}_${video.id}`;
+  }
+
   return (
-    <div className={videoBadgeStyles.videoBadge}>
-      <div className={videoBadgeStyles.thumbnailContainer}>
-        <img src={video.thumbnails.medium.url} alt={video.title} />
-        <div className={videoBadgeStyles.publishTimeOverlay}>{date.format(getPremierDate(video), 'h:mm A')}</div>
-        <div className={videoBadgeStyles.durationOverlay}>{durationToString(parse(video.duration))}</div>
-      </div>
+    <div className={videoBadgeStyles.videoBadge} id={getID()}>
+      <a target="_blank" rel="noopener noreferrer"  href={video.url} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className={videoBadgeStyles.thumbnailContainer}>
+          <img src={video.thumbnails.medium.url} alt={video.title} />
+          <div className={videoBadgeStyles.publishTimeOverlay}>{date.format(getPremierDate(video), 'h:mm A')}</div>
+          <div className={videoBadgeStyles.durationOverlay}>{durationToString(parse(video.duration))}</div>
+          <div className={videoBadgeStyles.titleOverlay}>
+            <div className={videoBadgeStyles.titleOverlayInner}>
+              {video.title}
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
   );
 }
