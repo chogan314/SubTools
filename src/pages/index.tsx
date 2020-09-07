@@ -26,8 +26,8 @@ class Index extends React.Component<IndexProps, IndexState> {
   }
 
   async componentDidMount(): Promise<void> {
-    const channels = await getChannels(channelIDsTestData.channelIDs);
-    this.setState({channels: channels});
+    const channels = await getChannels(this.getChannelIDs());
+    this.setState({channels: this.sortChannels(channels)});
 
     const playlistItems = (await Promise.all(
       channels.map(channel => getUploadPlaylistItems(channel))
@@ -38,11 +38,20 @@ class Index extends React.Component<IndexProps, IndexState> {
     this.setState({videos: videos});
   }
 
+  getChannelIDs(): string[] {
+    return channelIDsTestData.channelIDs;
+  }
+
+  sortChannels(channels: Channel[]): Channel[] {
+    const channelIDs = this.getChannelIDs();
+    return channelIDs.map(id => channels.filter(channel => channel.id === id))
+      .reduce((flat, next) => flat.concat(next), []);
+  }
+
   getChannelVideos(channel: Channel): Video[] {
     return this.state.videos
       .filter(video => video.channelID === channel.id)
-      .filter(video => video.broadcastType === "none")
-      .sort((videoA, videoB) => videoA.publishDate > videoB.publishDate ? 1 : 0);
+      .filter(video => video.broadcastType === "none");
   }
 
   render(): React.ReactElement {

@@ -31,6 +31,7 @@ function ChannelVideosByDate({channel, videos, dates}: ChannelVideosRowProps): R
               <div>
                 {
                   videos.filter(video => areSameDate(video.publishDate, d))
+                  .sort((a, b) => a > b ? 1 : -1)
                   .map(video => <VideoBadge key={video.id} video={video} />)
                 }
               </div>

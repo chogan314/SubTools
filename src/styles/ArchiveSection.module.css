@@ -6,7 +6,7 @@
 }
 
 .tableHeader {
-  display: table-row;
+  display: table-header-group;
 }
 
 .tableHeader > div {
