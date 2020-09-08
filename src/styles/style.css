@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
 
+html * {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Noto Sans', sans-serif;
   background-color: rgb(40, 44, 52)
