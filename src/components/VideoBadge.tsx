@@ -32,65 +32,15 @@ function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
     return timeValues.join(':');
   }
 
-  function handleMouseEnter(): void {
-    const publishTimeOverlay = (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.publishTimeOverlay}`) as HTMLDivElement);
-    const durationOveraly = (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.durationOverlay}`) as HTMLDivElement);
-    const titleOverlay = (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.titleOverlay}`) as HTMLDivElement);
-
-    fadeOut(publishTimeOverlay);
-    fadeOut(durationOveraly);
-    fadeIn(titleOverlay);
-  }
-
-  function handleMouseLeave(): void {
-    const publishTimeOverlay = (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.publishTimeOverlay}`) as HTMLDivElement);
-    const durationOveraly = (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.durationOverlay}`) as HTMLDivElement);
-    const titleOverlay = (document.getElementById(getID())?.querySelector(`.${videoBadgeStyles.titleOverlay}`) as HTMLDivElement);
-
-    fadeIn(publishTimeOverlay);
-    fadeIn(durationOveraly);
-    fadeOut(titleOverlay);
-  }
-
-  function fadeOut(div: HTMLDivElement) {
-    let op = 1;  // initial opacity
-    const timer = setInterval(function () {
-        if (op <= 0.1) {
-            clearInterval(timer);
-            div.style.display = 'none';
-        }
-        div.style.opacity = op.toString();
-        div.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op -= op * 0.1;
-    }, 3);
-  }
-
-  function fadeIn(div: HTMLDivElement) {
-    let op = 0.1;  // initial opacity
-    div.style.opacity = op.toString();
-    div.style.display = 'block';
-    const timer = setInterval(function () {
-        if (op >= 1){
-            clearInterval(timer);
-            div.style.display = 'block';
-        }
-        div.style.opacity = op.toString();
-        div.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op += op * 0.1;
-    }, 3);
-  }
-
-  function getID(): string {
-    return `videoBadge_${video.channelID}_${video.id}`;
-  }
-
   return (
-    <div className={videoBadgeStyles.videoBadge} id={getID()}>
-      <a target="_blank" rel="noopener noreferrer"  href={video.url} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div className={videoBadgeStyles.videoBadge}>
+      <a target="_blank" rel="noopener noreferrer"  href={video.url}>
         <div className={videoBadgeStyles.thumbnailContainer}>
           <img src={video.thumbnails.medium.url} alt={video.title} />
-          <div className={videoBadgeStyles.publishTimeOverlay}>{date.format(getPremierDate(video), 'h:mm A')}</div>
-          <div className={videoBadgeStyles.durationOverlay}>{durationToString(parse(video.duration))}</div>
+          <div className={videoBadgeStyles.statsOverlay}>
+            <div className={videoBadgeStyles.publishTimeOverlay}>{date.format(getPremierDate(video), 'h:mm A')}</div>
+            <div className={videoBadgeStyles.durationOverlay}>{durationToString(parse(video.duration))}</div>
+          </div>
           <div className={videoBadgeStyles.titleOverlay}>
             <div className={videoBadgeStyles.titleOverlayInner}>
               <div className={videoBadgeStyles.titleOverlayInnerText}>
