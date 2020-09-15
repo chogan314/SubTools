@@ -1,6 +1,6 @@
 .archiveSection {
-  display: table;
-  table-layout: fixed;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   background-color:  rgb(59, 63, 71);;
   border-radius: 6px;
@@ -8,15 +8,16 @@
 }
 
 .tableHeader {
-  display: table-header-group;
+  display: flex;
 }
 
 .tableHeader > div {
-  display: table-cell;
   text-align: center;
   padding-bottom: 20px;
   font-size: 16px;
   font-weight: bold;
   font-family: 'Noto Sans', sans-serif;
   color: rgb(193, 194, 195);
+  flex-grow: 1;
+  flex-basis: 99999px;
 }

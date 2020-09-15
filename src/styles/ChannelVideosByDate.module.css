@@ -1,18 +1,16 @@
 .channelVideos {
-  display: table-row;
-}
-
-.channelVideos > * {
-  display: table-cell;
-  vertical-align: top;
+  display: flex;
+  flex-direction: row;
 }
 
 .channelCell {
-  display: table-cell;
+  flex-grow: 1;
+  flex-basis: 99999px;
 }
 
 .dateCell {
-  display: table-cell;
+  flex-grow: 1;
+  flex-basis: 99999px;
 }
 
 .dateCell > div {
