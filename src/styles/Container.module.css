@@ -13,3 +13,11 @@
   flex-direction: column;
   align-items: center;
 }
+
+.containerInner > * {
+  margin-bottom: 20px;
+}
+
+.containerInner > *:last-child {
+  margin-bottom: 0;
+}

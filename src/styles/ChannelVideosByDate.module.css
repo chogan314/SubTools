@@ -1,11 +1,19 @@
 .channelVideos {
   display: flex;
   flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  align-items: flex-start;
+}
+
+.emptyContainer {
+  align-items: stretch;
 }
 
 .channelCell {
   flex-grow: 1;
-  flex-basis: 99999px;
+  flex-basis: 11111px;
+  margin-right: 10px;
 }
 
 .dateCell {
@@ -17,10 +25,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 16px;
-  padding-bottom: 16px;
 }
 
-.channelVideosVideos {
-  
+.videosSection {
+  flex-grow: 7;
+  flex-basis: 77777px;
+  display: flex;
+  background-color: rgb(97, 97, 105);
+  border-radius: 10px;
+  margin-left: 5px;
+  padding: 8px;
 }

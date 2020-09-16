@@ -4,7 +4,7 @@ import React from 'react';
 const containerStyles = require('../styles/Container.module.css');
 
 type ContainerProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 function Container({children}: ContainerProps): React.ReactElement {

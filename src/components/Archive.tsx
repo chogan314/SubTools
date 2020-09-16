@@ -3,14 +3,14 @@ import ChannelVideosByDate from './ChannelVideosByDate';
 import date from 'date-and-time';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const archiveSectionStyles = require('../styles/ArchiveSection.module.css');
+const archiveStyles = require('../styles/Archive.module.css');
 
-type ArchiveSectionProps = {
+type ArchiveProps = {
   channels: Channel[],
   videos: Video[]
 }
 
-function ArchiveSection({channels, videos}: ArchiveSectionProps): React.ReactElement {
+function Archive({channels, videos}: ArchiveProps): React.ReactElement {
   const dates = [
     new Date(),
     date.addDays(new Date(), -1),
@@ -29,22 +29,24 @@ function ArchiveSection({channels, videos}: ArchiveSectionProps): React.ReactEle
   }
 
   return (
-    <div className={archiveSectionStyles.archiveSection}>
-      <div className={archiveSectionStyles.tableHeader}>
-        <div>Channel</div>
-        {
-          dates.map(d => {
-            return (
-              <div key={`dateHeader_${date.format(d, 'YYYY-MM-DD')}`}>
-                {date.format(d, 'dddd MMM DD')}
-              </div>
-            );
-          })
-        }
+    <div>
+      <div className={archiveStyles.tableHeader}>
+        <div className={archiveStyles.channelHeader}>Channel</div>
+        <div className={archiveStyles.dateHeaders}>
+          {
+            dates.map(d => {
+              return (
+                <div key={`dateHeader_${date.format(d, 'YYYY-MM-DD')}`}>
+                  {date.format(d, 'dddd MMM DD')}
+                </div>
+              );
+            })
+          }
+        </div>
       </div>
       {channels.map(channel => <ChannelVideosByDate key={channel.id} channel={channel} videos={getChannelVideos(channel, videos)} dates={dates} />)}
     </div>
   );
 }
 
-export default ArchiveSection;
+export default Archive;

@@ -1,0 +1,15 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color:  rgb(59, 63, 71);
+  border-radius: 6px;
+  padding: 25px;
+}
+
+.title {
+  margin: 0 0 50px 15px;
+  font-family: 'Noto Sans', sans-serif;
+  color: rgb(193, 194, 195);
+  font-size: 42px;
+}

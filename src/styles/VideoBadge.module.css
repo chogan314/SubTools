@@ -1,5 +1,5 @@
 .videoBadge {
-  padding: 5px;
+  padding: 8px;
 }
 
 .videoBadge img {
@@ -7,7 +7,22 @@
   height: auto;
   width: auto;
   display: block;
-  border-radius: 2px;
+  border-radius: 4px;
+}
+
+.normalPopularity {
+  border: 5px solid silver;
+}
+
+.highPopularity {
+  border: 5px solid gold;
+}
+
+.extremePopularity {
+  border: double 5px transparent;
+  background-image: linear-gradient(white, white), radial-gradient(circle at top left, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
 }
 
 .videoBadge a {
@@ -41,8 +56,8 @@
 
 .durationOverlay {
   position: absolute;
-  bottom: 3px;
-  right: 6px;
+  bottom: 7px;
+  right: 8px;
   background-color: black;
   color: white;
   padding: 0 4px 0 4px;
@@ -51,8 +66,8 @@
 
 .publishTimeOverlay {
   position: absolute;
-  bottom: 3px;
-  left: 6px;
+  bottom: 7px;
+  left: 8px;
   background-color: black;
   color: white;
   padding: 0 4px 0 4px;
@@ -60,7 +75,6 @@
 }
 
 .titleOverlay {
-  border-radius: 2px;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -68,10 +82,11 @@
   right: 0;
   opacity: 0;
   transition: opacity 0.3s;
-  -webkit-transition: opacity 0.3s;
+  text-align: center;
 }
 
 .titleOverlayInner {
+  border-radius: 4px;
   width: 100%;
   max-height: 100%;
   background-image: linear-gradient(
@@ -82,13 +97,13 @@
     rgba(0, 0, 0, 0.5),
     rgba(0, 0, 0, 0)
   );
-  padding: 10px 5px 20px 5px;
+  padding: 10px 8px 20px 8px;
   display: flex;
 }
 
 .titleOverlayInnerText {
   color: rgb(193, 194, 195);
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   overflow: hidden;
 }

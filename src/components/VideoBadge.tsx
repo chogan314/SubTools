@@ -6,11 +6,18 @@ import {getPremierDate} from '../util/VideoUtils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const videoBadgeStyles = require('../styles/VideoBadge.module.css');
 
-type VideoBadgeProps = {
-  video: Video
+export enum Popularity {
+  Normal,
+  High,
+  Extreme
 }
 
-function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
+type VideoBadgeProps = {
+  video: Video
+  popularity: Popularity
+}
+
+function VideoBadge({video, popularity}: VideoBadgeProps): React.ReactElement {
   function durationToString(duration: Duration): string {
     const timeValues: string[] = [];
     let hours = 0;
@@ -32,11 +39,23 @@ function VideoBadge({video}: VideoBadgeProps): React.ReactElement {
     return timeValues.join(':');
   }
 
+  function getPopularityClass(popularity: Popularity): string {
+    if (popularity === Popularity.Extreme) {
+      return videoBadgeStyles.extremePopularity;
+    }
+    else if (popularity === Popularity.High) {
+      return videoBadgeStyles.highPopularity;
+    }
+    else {
+      return videoBadgeStyles.normalPopularity;
+    }
+  }
+
   return (
     <div className={videoBadgeStyles.videoBadge}>
       <a target="_blank" rel="noopener noreferrer"  href={video.url}>
         <div className={videoBadgeStyles.thumbnailContainer}>
-          <img src={video.thumbnails.medium.url} alt={video.title} />
+          <img src={video.thumbnails.medium.url} alt={video.title} className={getPopularityClass(popularity)} />
           <div className={videoBadgeStyles.statsOverlay}>
             <div className={videoBadgeStyles.publishTimeOverlay}>{date.format(getPremierDate(video), 'h:mm A')}</div>
             <div className={videoBadgeStyles.durationOverlay}>{durationToString(parse(video.duration))}</div>
